@@ -4,6 +4,19 @@ defmodule CountdownWeb.EventController do
   alias Countdown.Events
   alias Countdown.Events.Event
 
+  plug :secure
+  
+  defp secure(conn, _params) do
+    user = get_session(conn, :current_user)
+    case user do
+     nil ->
+         conn |> redirect(to: "/auth/auth0") |> halt
+     _ ->
+       conn
+       |> assign(:current_user, user)
+    end
+  end
+
   def index(conn, _params) do
     events = Events.list_events()
     render(conn, "index.html", events: events)

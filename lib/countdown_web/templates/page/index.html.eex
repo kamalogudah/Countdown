@@ -1,36 +1,20 @@
-<div class="jumbotron">
-  <h2><%= gettext "Welcome to %{name}!", name: "Phoenix" %></h2>
-  <p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
-</div>
+<%= for event <- @events do %>
+    <div class="jumbotron">
+      <span class="h1">Days until <%= event.title %></span>
+      <p class="text-center"><span class="countdownClock" data-due="<%= event.due %>"></span></p>
+    </div>
+<% end %>
+<script>
+$(document).ready(function() {
+    $('.countdownClock').each(function(i, el) {
+      var today = new Date();
+      var due = new Date($(el).data('due'));
 
-<div class="row marketing">
-  <div class="col-lg-6">
-    <h4>Resources</h4>
-    <ul>
-      <li>
-        <a href="http://phoenixframework.org/docs/overview">Guides</a>
-      </li>
-      <li>
-        <a href="https://hexdocs.pm/phoenix">Docs</a>
-      </li>
-      <li>
-        <a href="https://github.com/phoenixframework/phoenix">Source</a>
-      </li>
-    </ul>
-  </div>
-
-  <div class="col-lg-6">
-    <h4>Help</h4>
-    <ul>
-      <li>
-        <a href="http://groups.google.com/group/phoenix-talk">Mailing list</a>
-      </li>
-      <li>
-        <a href="http://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on freenode IRC</a>
-      </li>
-      <li>
-        <a href="https://twitter.com/elixirphoenix">@elixirphoenix</a>
-      </li>
-    </ul>
-  </div>
-</div>
+      $(el).FlipClock((due/1000) - (today/1000), {
+          clockFace: 'DailyCounter',
+            countdown: true,
+            showSeconds: false
+      });
+    });
+});
+</script>
